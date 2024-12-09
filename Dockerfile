@@ -6,9 +6,12 @@ WORKDIR /client
 COPY client/package*.json ./
 RUN npm install
 COPY client/ ./
-RUN npm run build
+RUN npm run build  # This generates the /client/build folder
 
+# Debug step: List contents of /client directory to ensure build is present
+RUN ls /client/build
 
+# Stage 2: Backend (Python + Flask)
 FROM python:3.9-slim AS backend
 WORKDIR /api
 
@@ -24,7 +27,7 @@ FROM python:3.9-slim
 WORKDIR /api
 
 # Copy frontend build from the first stage
-COPY --from=frontend /client/build /client/build
+COPY --from=frontend /client/build /client/build  # Copy the build folder to the final image
 
 # Copy backend from the second stage
 COPY --from=backend /api /api
