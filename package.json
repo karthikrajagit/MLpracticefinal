@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
+  
+  "engines": {
+    "node": ">=18.0.0"
+    },
+
   "scripts": {
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
@@ -10,6 +15,8 @@
     "docker-build": "docker build -t code-execution-image .",
     "docker-run": "docker run -p 5000:5000 code-execution-image"
   },
+ 
+
   "keywords": [],
   "author": "",
   "license": "ISC",
