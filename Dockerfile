@@ -13,7 +13,7 @@ FROM python:3.9-slim AS backend
 WORKDIR /api
 
 # Copy Python dependencies
-COPY api/requirements.txt /api/
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend code
