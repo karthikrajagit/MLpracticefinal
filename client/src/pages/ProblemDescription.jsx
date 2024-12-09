@@ -136,13 +136,9 @@ export default function ProblemDescription() {
       .filter(c => c.id <= cellId)
       .map(c => c.code)
       .join('\n');
-      if(!user)
+      if(user!==null)
       {
-          setIsLoadings(false);
-        showToast("You need to sign in to execute code");
-      }
-
-    try {
+      try {
       {
         const response = await fetch('http://localhost:5000/execute', {
         method: 'POST',
@@ -159,11 +155,17 @@ export default function ProblemDescription() {
         setCells(cells.map(c => c.id === cellId ? { ...c, output: data.error, isError: true } : c));
       }
     }
-    
-    } catch (error) {
+  }   
+    catch (error) {
       setIsLoadings(false);
       setCells(cells.map(c => c.id === cellId ? { ...c, output: 'Error executing code' } : c));
     }
+  }
+    else
+    {
+      setIsLoadings(false);
+      showToast("You need to sign in to execute code");
+    }     
   };
   const handleButtonClick2 = () => {
     submitAllCells();
