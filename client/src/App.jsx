@@ -7,7 +7,7 @@ import ProblemDescription from './pages/ProblemDescription'
 import Signup from './pages/Signup'
 import Signin from './pages/Signin'
 import PrivateRoute from './components/PrivateRoute'
-import Profile from './pages/profile'
+import Profile from './pages/Profile'
 
 
 export default function App() {
