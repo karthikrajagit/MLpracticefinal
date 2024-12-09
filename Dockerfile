@@ -18,4 +18,4 @@ FROM python:3.10
 WORKDIR /app
 COPY --from=frontend /client/build /app/client
 COPY --from=backend /api /app/api
-CMD ["python", "api/app.py"]
+CMD ["python", "flask-app/app.py"]
