@@ -3,24 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-  
   "engines": {
     "node": ">=18.0.0"
-    },
-
+  },
   "scripts": {
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client",
+    "build": "npm install && npm install --prefix client && rm -rf client/build && npm run build --prefix client",
     "docker-build": "docker build -t code-execution-image .",
     "docker-run": "docker run -p 5000:5000 code-execution-image"
   },
- 
-
   "keywords": [],
-  "author": "",
+  "author": "Your Name",
   "license": "ISC",
-  "description": "",
+  "description": "A machine learning practice platform with frontend and backend integration",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -29,14 +25,11 @@
     "dockerode": "^4.0.2",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "flask": "^0.2.10",
-    "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
     "lodash.debounce": "^4.0.8",
     "mongodb": "^6.10.0",
     "mongoose": "^8.7.2",
     "multer": "^1.4.4",
-    "multer-gridfs-storage": "^5.0.2",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.1.7",
     "react-redux": "^9.1.2",
