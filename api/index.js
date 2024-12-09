@@ -4,11 +4,13 @@ import adminroutes from "./routes/problem.route.js";
 import dotenv from 'dotenv';
 import userroutes from "./routes/user.route.js";
 import cors from 'cors'
+import path from 'path';
 
 dotenv.config();
  // Enable CORS for all routes
 
 const app = express();
+const __dirname = path.resolve();
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(cors());
@@ -22,6 +24,12 @@ const startServer = async () => {
 
     app.use('/api/v1/admin', adminroutes);
     app.use('/api/v1/user', userroutes);
+
+    app.use(express.static(path.join(__dirname, 'client/build')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+    })
   } catch (err) {
     console.error(err);
   }
