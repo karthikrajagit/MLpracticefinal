@@ -6,13 +6,6 @@ RUN npm install
 COPY client/ ./ 
 RUN npm run build 
 
-# Stage 2: Set up the Flask backend
-FROM python:3.9-slim AS backend
-WORKDIR /api  
-COPY api/ ./  
-
-EXPOSE 3000
-CMD ["npm", "start"]
 
 # Stage 3: Set up the Flask app and combine frontend and backend
 FROM python:3.9-slim  
@@ -28,10 +21,6 @@ COPY flask-app/ ./
 # Copy the React build from Stage 1 (frontend)
 COPY --from=frontend /client/dist /flask-app/client/dist  
 
-# Copy the API code from Stage 2 (backend)
-COPY --from=backend /api /flask-app/api  
-
-# Expose port for Flask app
 EXPOSE 5000
 
 # Set the Flask app entry point (correct path to app.py)

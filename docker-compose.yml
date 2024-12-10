@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend-build
+      target: client
     ports:
       - "5173:80" # Vite frontend runs on port 5173, exposed on 80 inside the container
     networks:
@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: backend
+      target: api
     ports:
       - "3000:3000" # Node.js backend runs on port 3000
     environment:
