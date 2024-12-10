@@ -1,3 +1,5 @@
+import flowbite from 'flowbite/plugin'; // Import the plugin in ES module style
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -9,6 +11,6 @@ export default {
     extend: {},
   },
   plugins: [
-    require('flowbite/plugin')
+    flowbite, // Use the imported plugin here
   ],
 }
