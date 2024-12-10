@@ -13,7 +13,7 @@ const app = express();
 const __dirname = path.resolve();
 app.use(express.json());
 app.set("view engine", "ejs");
-app.use(cors({origin: 'https://client-hs1v.onrender.com/'}));
+app.use(cors());
 const startServer = async () => {
   try {
     mongoose.connect(process.env.MONGO);
@@ -22,8 +22,16 @@ const startServer = async () => {
       console.log("Server is running on port 3000");
     });
 
+    app.use(express.static(path.join(__dirname, 'client/dist/')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+    });
+
     app.use('/api/v1/admin', adminroutes);
     app.use('/api/v1/user', userroutes);
+
+    
 
   } catch (err) {
     console.error(err);
