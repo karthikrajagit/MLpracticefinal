@@ -24,4 +24,4 @@ EXPOSE 5000
 ENV NAME=World
 
 # Run the application
-CMD ["python3", "app.py"]
+CMD ["python", "app.py"]

@@ -17,11 +17,10 @@ export default defineConfig({
     },
   },
   build: {
-    chunkSizeWarningLimit: 1000, // Increases the chunk size warning limit to 1MB
+    chunkSizeWarningLimit: 1000, 
     rollupOptions: {
       output: {
         manualChunks: {
-          // Example: Split vendor libraries into separate chunks
           vendor: ['react', 'react-dom'],
         },
       },

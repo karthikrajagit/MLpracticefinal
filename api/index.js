@@ -13,7 +13,7 @@ const app = express();
 const __dirname = path.resolve();
 app.use(express.json());
 app.set("view engine", "ejs");
-app.use(cors());
+app.use(cors({origin: 'https://client-hs1v.onrender.com/'}));
 const startServer = async () => {
   try {
     mongoose.connect(process.env.MONGO);
@@ -25,11 +25,6 @@ const startServer = async () => {
     app.use('/api/v1/admin', adminroutes);
     app.use('/api/v1/user', userroutes);
 
-    app.use(express.static(path.join(__dirname, 'client/build')));
-
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-    })
   } catch (err) {
     console.error(err);
   }

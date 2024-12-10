@@ -6,8 +6,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from threading import Lock
 import docker
-
-app = Flask(__name__, static_folder='client/dist', static_url_path='')
+from waitress import serve
+app = Flask(__name__)
 CORS(app)
 
 
@@ -23,12 +23,14 @@ submission_lock = Lock()
 allowed_extensions = {'csv', 'json'}
 
 
-@app.route('/')
-def serve():
-    return app.send_static_file('index.html')
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+
+@app.route('/')
+def root():
+    return '', 204
+
 
 @app.route('/execute', methods=['POST'])
 def execute():
@@ -206,4 +208,4 @@ def submit():
 
 if __name__ == '__main__':
     # Use threaded=True to ensure Flask handles each request in a separate thread
-    app.run(host='0.0.0.0', port=5000, threaded=True)
+    serve(app, host='0.0.0.0', port=5000)

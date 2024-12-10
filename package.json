@@ -9,9 +9,7 @@
  "scripts": {
   "dev": "nodemon api/index.js",
   "start": "node api/index.js",
-  "build": "npm install && npm install --prefix client && $env:INLINE_RUNTIME_CHUNK='false'; npm run build --prefix client",
-  "docker-build": "docker build -t code-execution-image .",
-  "docker-run": "docker run -p 5000:5000 code-execution-image"
+  "build": "npm install && npm install --prefix client && $env:INLINE_RUNTIME_CHUNK='false'; npm run build --prefix client"
 },
 
 
