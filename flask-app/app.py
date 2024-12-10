@@ -7,8 +7,9 @@ from flask_cors import CORS
 from threading import Lock
 import docker
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/dist', static_url_path='')
 CORS(app)
+
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -21,7 +22,6 @@ submission_lock = Lock()
 # Validate file type
 allowed_extensions = {'csv', 'json'}
 
-app = Flask(__name__, static_folder='client/dist', static_url_path='')
 
 @app.route('/')
 def serve():
