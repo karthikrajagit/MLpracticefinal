@@ -13,11 +13,19 @@ CORS(app)
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 
+
+
 # Lock to prevent race conditions
 submission_lock = Lock()
 
 # Validate file type
 allowed_extensions = {'csv', 'json'}
+
+app = Flask(__name__, static_folder='client/dist', static_url_path='')
+
+@app.route('/')
+def serve():
+    return app.send_static_file('index.html')
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
