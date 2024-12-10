@@ -1,5 +1,5 @@
 import User from "../models/Userdata.js";
-import bcrypt from 'bcrypt'
+import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 export const signup = async (req, res, next) => {
@@ -24,7 +24,7 @@ export const signup = async (req, res, next) => {
         }
 
         // Hash the password
-        const hashedpassword = await bcrypt.hash(password, 10);
+        const hashedpassword = await bcryptjs.hash(password, 10);
 
         // Create a new user
         const newUser = new User({

@@ -1,23 +1,24 @@
 {
   "name": "mlpractice",
   "version": "1.0.0",
-  "main":  "api/index.js",
+  "main": "api/index.js",
   "type": "module",
   "engines": {
     "node": ">=18.0.0"
   },
- "scripts": {
-  "dev": "nodemon api/index.js",
-  "start": "node api/index.js",
-  "build": "npm install && npm install --prefix client && npm run build --prefix client"
-},
-
+  "scripts": {
+    "dev": "nodemon api/index.js",
+    "start": "node api/index.js",
+    "build": "npm install && npm install --prefix client && npm run build --prefix client",
+    "postinstall": "npm rebuild bcrypt --build-from-source"
+  },
   "keywords": [],
   "author": "Your Name",
   "license": "ISC",
   "description": "A machine learning practice platform with frontend and backend integration",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
     "docker": "^1.0.0",
