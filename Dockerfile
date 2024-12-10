@@ -1,48 +1,38 @@
-# Stage 1: Build the frontend
-FROM node:18 AS frontend-build
+# Stage 1: Build the React frontend
+FROM node:18 AS frontend
+WORKDIR /client
+COPY client/package*.json ./  
+RUN npm install  
+COPY client/ ./ 
+RUN npm run build 
 
-WORKDIR /app
+# Stage 2: Set up the Flask backend
+FROM python:3.9-slim AS backend
+WORKDIR /api  
+COPY api/ ./  
 
-# Install dependencies for the frontend
-COPY client/package.json client/package-lock.json ./
-RUN npm install
-
-# Build the Vite app
-COPY client ./
-RUN npm run build
-
-# Stage 2: Backend API
-FROM node:18 AS backend
-
-WORKDIR /api
-
-# Install dependencies for the backend
-COPY api/package.json api/package-lock.json ./
-RUN npm install
-
-# Copy the backend code
-COPY api ./
-
-# Expose port for the backend
 EXPOSE 3000
-
-# Start the backend server
 CMD ["npm", "start"]
 
-# Stage 3: Flask app (for code execution)
-FROM python:3.9-slim AS flaskapp
+# Stage 3: Set up the Flask app and combine frontend and backend
+FROM python:3.9-slim  
+WORKDIR /flask-app
 
-WORKDIR /flaskapp
-
-# Install Python dependencies
-COPY flask-app/requirements.txt ./
-RUN pip install -r requirements.txt
+# Install Flask app dependencies
+COPY flask-app/requirements.txt . 
+RUN pip install --no-cache-dir -r requirements.txt 
 
 # Copy Flask app code
-COPY flask-app ./
+COPY flask-app/ ./ 
 
-# Expose the port for Flask
+# Copy the React build from Stage 1 (frontend)
+COPY --from=frontend /client/dist /flask-app/client/dist  
+
+# Copy the API code from Stage 2 (backend)
+COPY --from=backend /api /flask-app/api  
+
+# Expose port for Flask app
 EXPOSE 5000
 
-# Start Flask app
-CMD ["python", "app.py"]
+# Set the Flask app entry point (correct path to app.py)
+CMD ["python", "app.py"]  # Corrected the path to app.py
