@@ -1,37 +1,33 @@
-# Stage 1: Frontend (React build)
+# Stage 1: Build the React frontend
 FROM node:18 AS frontend
 WORKDIR /client
-
-# Install dependencies and build the frontend
-COPY client/package*.json ./
-RUN npm install
-COPY client/ ./
-RUN npm run build  
-
-# Debug step: List contents of /client directory to ensure build is present
-RUN ls /client/build
-
-# Stage 2: Backend (Python + Flask)
+COPY client/package*.json ./  
+RUN npm install  
+COPY client/ ./ 
+RUN npm run build 
+# Stage 2: Set up the Flask backend
 FROM python:3.9-slim AS backend
-WORKDIR /api
+WORKDIR /api  
+COPY api/ ./  
 
-# Copy Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Stage 3: Set up the Flask app and combine frontend and backend
+FROM python:3.9-slim  
+WORKDIR /flask-app
 
-# Copy backend code
-COPY api/ /api/
+# Install Flask app dependencies
+COPY flask-app/requirements.txt . 
+RUN pip install --no-cache-dir -r requirements.txt 
 
-# Stage 3: Final Image (Combine Frontend and Backend)
-FROM python:3.9-slim
-WORKDIR /api
+# Copy Flask app code
+COPY flask-app/ ./ 
 
-# Copy frontend build from the first stage
-COPY --from=frontend /client/build /client/build 
+# Copy the React build from Stage 1 (frontend)
+COPY --from=frontend /client/dist /flask-app/client/dist  
 
-# Copy backend from the second stage
-COPY --from=backend /api /api
-
-# Expose Flask port and run the app
+# Copy the API code from Stage 2 (backend)
+COPY --from=backend /api /flask-app/api  
+# Expose port for Flask app
 EXPOSE 5000
-CMD ["python", "flask-app/app.py"]
+
+# Set the Flask app entry point
+CMD ["python", "flask-app/app.py"]  
