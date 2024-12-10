@@ -1,0 +1,34 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-build
+    ports:
+      - "5173:80" # Vite frontend runs on port 5173, exposed on 80 inside the container
+    networks:
+      - app-network
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    ports:
+      - "3000:3000" # Node.js backend runs on port 3000
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+  flaskapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: flaskapp
+    ports:
+      - "5000:5000" # Flask app runs on port 5000
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
