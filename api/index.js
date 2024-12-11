@@ -5,15 +5,17 @@ import dotenv from 'dotenv';
 import userroutes from "./routes/user.route.js";
 import cors from 'cors'
 import path from 'path';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
- // Enable CORS for all routes
+
 
 const app = express();
 const __dirname = path.resolve();
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(cors());
+app.use(cookieParser());
 const startServer = async () => {
   try {
     mongoose.connect(process.env.MONGO);
