@@ -7,7 +7,6 @@ const router = express.Router();
 router.post('/signup', signup)
 router.post('/signin', signin)
 router.post('/google', google)
-router.post('/update', update)
 router.post('/save-code', saveCodeToServer);
 router.get('/code/:userId/:problemId', code);
 export default router;
