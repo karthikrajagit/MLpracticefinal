@@ -8,8 +8,6 @@ venv/
 # Ignore .env file
 .env
 
-flask-app/
-
 # Ignore log files
 *.log
 
