@@ -64,7 +64,7 @@ export const signin = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        if(!await bcrypt.compare(password, user.password)){
+        if(!await bcryptjs.compare(password, user.password)){
             return res.status(401).json({ message: "Incorrect password" });
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
@@ -80,7 +80,7 @@ export const google = async (req,res) => {
         const user = await User.findOne({ gmail });
         if (!user) {
             const password = Math.random().toString(36).substring(2, 15);
-            const hashedpassword = await bcrypt.hash(password, 10);
+            const hashedpassword = await bcryptjs.hash(password, 10);
             const newUser = new User({ username, gmail, password: hashedpassword,avatar: photo });
             await newUser.save();
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
@@ -95,6 +95,3 @@ export const google = async (req,res) => {
 }
 
 
-export const update = async (req, res) => {
-    
-}
