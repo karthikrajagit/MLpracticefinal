@@ -1,5 +1,5 @@
 import express from 'express';
-import {google, signup, update} from '../controller/user.controller.js';
+import {google, signup} from '../controller/user.controller.js';
 import { signin } from '../controller/user.controller.js';
 import { saveCodeToServer, code } from '../controller/code.controller.js';
 const router = express.Router();
