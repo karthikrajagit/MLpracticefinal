@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function Header() {
   const navigate = useNavigate();
   const {user} = useSelector((state) => state.user);
-  const adminEmail = ['karthik.raja.007a@gmail.com']
+  const adminEmail = ['karthik.raja.007a@gmail.com', 'karthikraja2@gmail.com']
   return (
     <header className="flex items-center justify-between bg-blue-600 h-20 px-10 shadow-md">
       {/* Logo or Title */}

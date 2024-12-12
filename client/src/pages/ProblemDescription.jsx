@@ -140,7 +140,7 @@ export default function ProblemDescription() {
       {
       try {
       {
-        const response = await fetch('http://localhost:5000/execute', {
+        const response = await fetch('https://flask-app-xhit.onrender.com/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: combinedCode, dataset: problem.filename, userId: userId }),  
@@ -200,7 +200,7 @@ const submitAllCells = async () => {
 
   try {
     if (user !== null) {
-      const response = await fetch('http://localhost:5000/submit', {
+      const response = await fetch('https://flask-app-xhit.onrender.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
