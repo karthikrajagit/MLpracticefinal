@@ -140,7 +140,7 @@ export default function ProblemDescription() {
       {
       try {
       {
-        const response = await fetch('https://flask-app-xhit.onrender.com/execute', {
+        const response = await fetch('http://localhost:5000/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: combinedCode, dataset: problem.filename, userId: userId }),  
@@ -200,7 +200,7 @@ const submitAllCells = async () => {
 
   try {
     if (user !== null) {
-      const response = await fetch('https://flask-app-xhit.onrender.com/submit', {
+      const response = await fetch('http://localhost:5000/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -340,6 +340,7 @@ const submitAllCells = async () => {
               value={cell.code}
               onChange={(value) => updateCode(value, cell.id)}
               options={{ fontSize: 14 }}
+              className='border border-gray-800 rounded-md mr-2'
             />
             <button
             className={`mt-2 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-transform transform hover:scale-105 ${

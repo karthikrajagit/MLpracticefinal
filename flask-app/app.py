@@ -6,15 +6,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from threading import Lock
 import docker
-from waitress import serve
+
 app = Flask(__name__)
 CORS(app)
 
-
 # Setup logging
 logging.basicConfig(level=logging.INFO)
-
-
 
 # Lock to prevent race conditions
 submission_lock = Lock()
@@ -22,15 +19,8 @@ submission_lock = Lock()
 # Validate file type
 allowed_extensions = {'csv', 'json'}
 
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
-
-
-@app.route('/')
-def root():
-    return '', 204
-
 
 @app.route('/execute', methods=['POST'])
 def execute():
@@ -207,5 +197,5 @@ def submit():
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    # Use threaded=True to ensure Flask handles each request in a separate thread
-    serve(app, host='0.0.0.0', port=5000)
+    # Use Flask's built-in development server (default behavior)
+    app.run(host='0.0.0.0', port=5000, debug=True)

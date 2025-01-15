@@ -10,7 +10,7 @@ export default defineConfig({
         logLevel: 'debug', // Enables logging for proxy activity
       },
       '/api/v2': {
-        target: 'https://flask-app-xhit.onrender.com',
+        target: 'http://localhost:5000',
         secure: false,
         logLevel: 'debug', // Enables logging for proxy activity
       },
