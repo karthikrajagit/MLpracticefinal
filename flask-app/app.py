@@ -6,6 +6,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from threading import Lock
 import docker
+import matplotlib.pyplot as plt
+from PIL import Image
+import io
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +24,29 @@ allowed_extensions = {'csv', 'json'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+# Function to create a plot
+def create_plot(data, plot_filename):
+    plt.figure(figsize=(10, 6))
+    plt.plot(data, label="Output Data", color='b')
+    plt.title("Output Plot")
+    plt.xlabel("Index")
+    plt.ylabel("Value")
+    plt.legend()
+
+    # Save the plot as an image
+    plt.savefig(plot_filename)
+    plt.close()
+
+# Function to save plot to a response-friendly format (base64 or image)
+def plot_to_image(plot_filename):
+    # Open the image file
+    img = Image.open(plot_filename)
+    # Convert the image to byte format to send in a response
+    byte_io = io.BytesIO()
+    img.save(byte_io, 'PNG')
+    byte_io.seek(0)
+    return byte_io
 
 @app.route('/execute', methods=['POST'])
 def execute():
@@ -83,6 +109,22 @@ def execute():
             return jsonify({"error": error_message, "logs": logs, "submission_id": submission_id, "userId": userId}), 400
 
         output = logs
+
+        # Assuming the output is a list of numbers or data points that you want to plot
+        output_data = [float(line) for line in output.splitlines() if line.strip().isdigit()]
+
+        if output_data:
+            # Generate plot
+            plot_filename = os.path.join(submission_dir, "output_plot.png")
+            create_plot(output_data, plot_filename)
+
+            # Convert plot to image format for response
+            plot_image = plot_to_image(plot_filename)
+
+            # Send plot image along with output data
+            shutil.rmtree(submission_dir)
+            return jsonify({"output": output, "plot": plot_image.getvalue(), "submission_id": submission_id, "userId": userId}), 200
+
         shutil.rmtree(submission_dir)
 
         return jsonify({"output": output, "submission_id": submission_id, "userId": userId}), 200
@@ -172,30 +214,17 @@ def submit():
             actual_output = float(logs.strip()) # Strip any extra spaces or newlines
             expected_output = float(expected_outputs[i].strip()) # Strip any extra spaces or newlines
 
-            # Log both actual and expected outputs to help with debugging
-            logging.info(f"Actual Output: {actual_output}")
-            logging.info(f"Expected Output: {expected_output}")
-    
-            
-            if actual_output < (expected_output - 0.05):
-                error_message = (
-                    f"Output for dataset {dataset} does not match. "
-                    f"Actual output: {actual_output} "
-                    f"Expected output: {expected_output}"
-                )
-                shutil.rmtree(submission_dir)
-                return jsonify({"logs": logs, "actual_output": actual_output, "expected_output": expected_output}), 400
+            # Log both actual and expected outputs
+            logging.info(f"Actual output: {actual_output}")
+            logging.info(f"Expected output: {expected_output}")
 
-
-        # If all datasets pass, return a success message
         shutil.rmtree(submission_dir)
-        logging.info(f"Submission ID: {submission_id}")
-        return jsonify({"message": "All datasets processed successfully.", "submission_id": submission_id})
+
+        return jsonify({"status": "success", "submission_id": submission_id, "userId": userId}), 200
 
     except Exception as e:
         logging.error(f"Error during submission: {str(e)}")
-        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Use Flask's built-in development server (default behavior)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

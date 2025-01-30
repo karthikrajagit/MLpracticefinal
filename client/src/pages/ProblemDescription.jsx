@@ -8,7 +8,6 @@ import { useCallback } from 'react';
 import debounce from 'lodash.debounce';
 import { Howl } from 'howler';
 
-
 export default function ProblemDescription() {
   const {user} = useSelector((state) => state.user);
   const userId = user?._id;
@@ -19,7 +18,6 @@ export default function ProblemDescription() {
   const [toast, setToast] = useState({ visible: false, message: '' });
   const [isVisible, setIsVisible] = useState(false);
   const [isloadings, setIsLoadings] = useState(false);
-
 
   const saveCodeToServer = async (cellId) => {
     const codeToSave = cells.find((c) => c.id === cellId)?.code || '';
@@ -36,8 +34,6 @@ export default function ProblemDescription() {
     }
   };
 
-
-  
 
   const triggerApplause = () => {
     setIsVisible(true);
@@ -164,7 +160,7 @@ export default function ProblemDescription() {
     else
     {
       setIsLoadings(false);
-      showToast("You need to sign in to execute code");
+      showToast("Please sign in to run the code");
     }     
   };
   const handleButtonClick2 = () => {
@@ -212,7 +208,7 @@ const submitAllCells = async () => {
       });
       const data = await response.json();
       if (response.ok) {
-        // Update all cells' outputs based on the response
+        // Update all cells' outputs based on the response       
         setCells(cells.map(c => ({ ...c, output: data.output , isError: false })));
         setIsLoading(false);
         setSubmissionStatus('Accepted');
@@ -394,6 +390,9 @@ const submitAllCells = async () => {
             >
               {cell.output}
             </pre>
+            <img 
+            src=""
+            />
           </div>
 
 
