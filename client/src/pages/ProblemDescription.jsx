@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Editor } from '@monaco-editor/react';
 import { FaPlay, FaPlus, FaPaperPlane } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -37,16 +37,12 @@ export default function ProblemDescription() {
 
   const triggerApplause = () => {
     setIsVisible(true);
-
-    // Remove applause after 5 seconds
     setTimeout(() => {
       setIsVisible(false);
     }, 5000);
   };
 
  
-
-
   const fetchSavedCode = async (cellId) => {
     try {
       const response = await fetch(`/api/v1/user/code/${userId}/${problemIdFromUrl}`);
@@ -63,8 +59,6 @@ export default function ProblemDescription() {
   const [cells, setCells] = useState([{ id: 1, code: '', output: '', isError: false, }]);
   const [submissionStatus, setSubmissionStatus] = useState(''); 
 
-  // Fetch problem data
- 
   
   useEffect(() => {
     const getProblemById = async (problemIdFromUrl) => {
@@ -156,8 +150,7 @@ export default function ProblemDescription() {
       setIsLoadings(false);
       setCells(cells.map(c => c.id === cellId ? { ...c, output: 'Error executing code' } : c));
     }
-  }
-    else
+  }else
     {
       setIsLoadings(false);
       showToast("Please sign in to run the code");
@@ -185,10 +178,6 @@ export default function ProblemDescription() {
   };
   const debouncedSave = useCallback(debounce(saveCodeToServer, 1000), [cells]);
 
-
-  // Submit all code cells
-  
- // Submit all code cells
 const submitAllCells = async () => {
   const combinedCode = cells
     .map(c => c.code)  // Get code from all cells, not just the last one
@@ -272,7 +261,9 @@ const submitAllCells = async () => {
 
       {/* Left Section: Problem Description */}
       <div className="lg:w-1/2 bg-white rounded-lg shadow-lg p-4">
+        <div className='flex flex-row gap-6'>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{problem.title}</h2>
+        </div>
         {problem.level==='Easy' && (<p className="text-green-500 mb-2">
           
           <span className=" text-gray-800 font-semibold ">Level: </span> {problem.level}
@@ -376,10 +367,10 @@ const submitAllCells = async () => {
             <div
             className={`bg-gray-100 rounded p-4 mt-2 shadow-inner overflow-auto`}
             style={{
-              maxHeight: '200px', // Max height to enable vertical scrolling
-              maxWidth: '100%', // Flexible width
-              overflowY: 'auto', // Vertical scroll when content overflows
-              overflowX: 'auto', // Horizontal scroll when content overflows
+              maxHeight: '200px', 
+              maxWidth: '100%',
+              overflowY: 'auto', 
+              overflowX: 'auto', 
             }}
           >
             <h4 className="font-semibold text-gray-800">Output:</h4>
@@ -394,9 +385,6 @@ const submitAllCells = async () => {
             src=""
             />
           </div>
-
-
-
           </div>
         ))}
         <div className="flex items-center space-x-2 mt-4">
@@ -411,10 +399,9 @@ const submitAllCells = async () => {
           isloading ? "cursor-not-allowed" : ""
         }`}
         onClick={handleButtonClick2}
-        disabled={isloading} // Disable the button while loading
+        disabled={isloading} 
       >
         {isloading ? (
-          // Spinner
           <svg
             className="w-5 h-5 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"
@@ -452,14 +439,9 @@ const submitAllCells = async () => {
               >
                 🎉 👏 Successfully Accepted 👏 🎉
               </div>
-             
-            )}
-
-          
-            
+            )}   
           </div>
-        )}
-        
+        )} 
       </div>
     </div>
   );

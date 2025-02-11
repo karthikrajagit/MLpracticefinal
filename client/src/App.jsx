@@ -8,6 +8,7 @@ import Signup from './pages/Signup'
 import Signin from './pages/Signin'
 import PrivateRoute from './components/PrivateRoute'
 import Profile from './pages/Profile'
+import Practice from './pages/Practice'
 
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/problem/:id" element={<ProblemDescription />} />
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/signin' element={<Signin/>}/>
+          <Route path='/problem/user/:id' element={<Practice/>}/>
           <Route element = {<PrivateRoute/>}>
             <Route path='/profile' element={<Profile/>}/>
           </Route>

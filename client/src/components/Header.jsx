@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   const navigate = useNavigate();
+  
   const {user} = useSelector((state) => state.user);
+  const userId = user._id;
   const adminEmail = ['karthik.raja.007a@gmail.com', 'karthikraja2@gmail.com']
   return (
     <header className="flex items-center justify-between bg-blue-600 h-20 px-10 shadow-md">
@@ -23,6 +25,9 @@ export default function Header() {
                 <li className='text-white hover:underline'> Sign In</li>
               )}
           </Link>
+          <Link to={`/problem/user/${userId}`}>
+          <button className='bg-green-500 text-white font-medium px-2 py-2 rounded-full hover:bg-green-700 transition duration-200 ease-in-out'>Try yourself</button>
+        </Link>
         {user && adminEmail.includes(user.gmail) && (
          <button 
          onClick={() => navigate('/admin')} 
