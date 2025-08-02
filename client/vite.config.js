@@ -7,12 +7,12 @@ export default defineConfig({
       '/api/v1': {
         target: 'http://localhost:3000',
         secure: false,
-        logLevel: 'debug', // Enables logging for proxy activity
+        logLevel: 'debug', 
       },
       '/api/v2': {
         target: 'http://localhost:5000',
         secure: false,
-        logLevel: 'debug', // Enables logging for proxy activity
+        logLevel: 'debug', 
       },
     },
   },

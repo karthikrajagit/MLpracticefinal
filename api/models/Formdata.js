@@ -22,7 +22,7 @@ const uploadSchema = new mongoose.Schema({
     },
     filenames: [
         {
-          type: String, // Array to store multiple file names
+          type: String, 
           required: true,
         },
       ],

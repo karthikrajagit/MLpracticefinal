@@ -10,7 +10,7 @@ export default function Practice() {
   const navigate = useNavigate();
 
   const userId = user?._id;
-
+  
   useEffect(() => {
     if (!user) {
       navigate("/signin");

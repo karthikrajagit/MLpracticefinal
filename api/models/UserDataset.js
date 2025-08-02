@@ -8,7 +8,7 @@ const uploadDataset = new mongoose.Schema({
     },
     filename: 
     {
-          type: String, // Array to store multiple file names
+          type: String, 
           required: true,
     },
       

@@ -1,22 +1,19 @@
 import path from 'path';
 import multer from 'multer';
 
-// Configure storage
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'flask-app/uploads/'); // Destination folder for uploaded files
+    cb(null, 'flask-app/uploads/'); 
   },
   filename: function (req, file, cb) {
-    let ext = path.extname(file.originalname); // Preserve file extension
-    cb(null, Date.now() + ext); // Use timestamp for unique filenames
+    let ext = path.extname(file.originalname); 
+    cb(null, Date.now() + ext); 
   },
 });
 
-// Configure multer to handle multiple files
 var uploadMiddleware = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
-    // Accept only CSV files
     if (file.mimetype === 'text/csv') {
       callback(null, true);
     } else {

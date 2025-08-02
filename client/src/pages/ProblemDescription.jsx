@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Editor } from '@monaco-editor/react';
 import { FaPlay, FaPlus, FaPaperPlane } from 'react-icons/fa';
@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCallback } from 'react';
 import debounce from 'lodash.debounce';
-import { Howl } from 'howler';
 
 export default function ProblemDescription() {
   const {user} = useSelector((state) => state.user);
@@ -81,26 +80,6 @@ export default function ProblemDescription() {
     };
     getProblemById(problemIdFromUrl);
   }, [problemIdFromUrl]);
-
-
-  useEffect(() => {
-    if (isVisible) {
-      console.log('Playing sound');
-      const audio = new Howl({
-        src: ['success-1-6297.mp3'], // Ensure this file is in the `public` folder
-        volume: 1.0,
-        preload: true,
-        onload: () => {
-          console.log('Audio loaded, now playing...');
-          audio.play();
-        },
-        onloaderror: (error) => {
-          console.error('Error loading audio:', error);
-        },
-      });
-      console.log('Howl initialized:', audio);
-    }
-  }, [isVisible]);
   
 
 
@@ -138,7 +117,12 @@ export default function ProblemDescription() {
       const data = await response.json();
       if (response.ok) {
         setIsLoadings(false);
-        setCells(cells.map(c => c.id === cellId ? { ...c, output: data.output, isError: false } : c, ));
+        setCells(cells.map(c => c.id === cellId ? { 
+          ...c, 
+          output: data.output, 
+          image: data.image, // Store the image data
+          isError: false 
+        } : c));
         
       } else {
         setIsLoadings(false);
@@ -244,22 +228,21 @@ const submitAllCells = async () => {
   return (
     <div className="flex flex-col lg:flex-row mt-2 lg:space-x-4">
 
-{toast.visible && (
-  <AnimatePresence>
-    <motion.div
-      initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 1, y: -50 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-sm font-medium px-4 py-2 rounded shadow-lg z-50"
-      style={{ maxWidth: '300px', textAlign: 'center' }}
-    >
-      {toast.message}
-    </motion.div>
-  </AnimatePresence>
-)}
+        {toast.visible && (
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 1, y: -50 }}
+              transition={{ duration: 0.5 }}
+              className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-sm font-medium px-4 py-2 rounded shadow-lg z-50"
+              style={{ maxWidth: '300px', textAlign: 'center' }}
+            >
+              {toast.message}
+            </motion.div>
+          </AnimatePresence>
+        )}
 
-      {/* Left Section: Problem Description */}
       <div className="lg:w-1/2 bg-white rounded-lg shadow-lg p-4">
         <div className='flex flex-row gap-6'>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{problem.title}</h2>
@@ -381,9 +364,13 @@ const submitAllCells = async () => {
             >
               {cell.output}
             </pre>
-            <img 
-            src=""
-            />
+            {cell.image && (
+              <img 
+                src={cell.image}
+                alt="Plot output"
+                className="mt-4 max-w-full"
+              />
+            )}
           </div>
           </div>
         ))}
