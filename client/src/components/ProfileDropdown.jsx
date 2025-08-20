@@ -49,7 +49,7 @@ const ProfileDropdown = () => {
             )}
         </div>
         ) : (
-            <li className='text-white hover:underline'> Sign In</li>
+            <li className='text-white hover:underline cursor-pointer' onClick={() => navigate('/signin')}> Sign In</li>
         )}            
     </div>
   )

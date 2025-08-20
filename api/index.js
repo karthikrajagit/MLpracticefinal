@@ -10,7 +10,7 @@ import topicroutes from "./routes/topic.route.js";
 
 dotenv.config();
 
-const app = express();
+const app = express();                      
 const __dirname = path.resolve();
 app.use(express.json());
 app.set("view engine", "ejs");

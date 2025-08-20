@@ -30,7 +30,7 @@ export default function UserEditor({dataset}) {
         setToast({ visible: true, message });
         setTimeout(() => {
           setToast({ visible: false, message: '' });
-        }, 3000); // Auto-hide after 5 seconds
+        }, 3000); 
       };
 
       const executeCode = async (cellId) => {
@@ -139,10 +139,9 @@ export default function UserEditor({dataset}) {
             isloading ? "cursor-not-allowed" : ""
             }`}
             onClick={() => handleButtonClick1(cell.id)}
-            disabled={isloadings} // Disable the button while loading
+            disabled={isloadings} 
             >
         {isloadings ? (
-          // Spinner
           <svg
             className="w-5 h-5 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"

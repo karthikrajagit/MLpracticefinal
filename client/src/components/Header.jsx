@@ -10,17 +10,6 @@ export default function Header() {
   const {user} = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-
-    useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-  
   
   const adminEmail = ['karthik.raja.007a@gmail.com', 'karthikraja2@gmail.com', 'karthik.raja.007c@gmail.com']
   return (

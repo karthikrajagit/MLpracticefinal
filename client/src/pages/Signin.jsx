@@ -18,12 +18,12 @@ export default function Signin() {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(signInstart()); // Start loading
+    dispatch(signInstart()); 
     try {
       const response = await fetch('/api/v1/user/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formdata),
+        body: JSON.stringify(formdata),     
       });
       const data = await response.json();
       if (response.ok) {

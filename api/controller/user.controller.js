@@ -3,47 +3,37 @@ import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import UserDataset from "../models/UserDataset.js";
 import fs from 'fs';
-import csv from 'csv-parser'; // Ensure csv-parser is also imported
+import csv from 'csv-parser'; 
 
 
 export const signup = async (req, res, next) => {
     const { username, gmail, password } = req.body;
 
     try {
-        // Check if all fields are provided
         if (!username || !gmail || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
-
-        // Validate email format (general validation for any domain)
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // General email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
         if (!emailRegex.test(gmail)) {
             return res.status(400).json({ message: "Invalid email format. Please enter a valid email address." });
         }
 
-        // Check if the email already exists
         const existingUser = await User.findOne({ gmail });
         if (existingUser) {
             return res.status(409).json({ message: "Email is already in use. Please use a different email." });
         }
 
-        // Hash the password
         const hashedpassword = await bcryptjs.hash(password, 10);
 
-        // Create a new user
         const newUser = new User({
             username,
             gmail,
             password: hashedpassword,
         });
 
-        // Save the user to the database
         await newUser.save();
 
-        // Generate a JWT token
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
-
-        // Set the token as a cookie and send the response
         res.cookie('access_token', token, {
             httpOnly: true
         })
@@ -89,7 +79,7 @@ export const google = async (req,res) => {
             await newUser.save();
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
             res.cookie('access_token', token, { httpOnly: true}).status(201).json(newUser);
-        } else {
+        } else {                           
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
             res.cookie('access_token', token, { httpOnly: true}).status(201).json(user);
         }
@@ -97,5 +87,5 @@ export const google = async (req,res) => {
         res.status(500).json({ message: error.message });
     }
 }
-// Ensure the correct path
+
 

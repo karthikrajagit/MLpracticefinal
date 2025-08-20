@@ -96,11 +96,9 @@ def submit():
 
     UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads'))
 
-    # Validate datasets
     if not isinstance(datasets, list) or not datasets:
         return jsonify({"error": "Invalid datasets."}), 400
 
-    # Validate expected outputs
     if len(expected_outputs) != len(datasets):
         return jsonify({"error": "Mismatch between number of datasets and expected outputs."}), 400
 

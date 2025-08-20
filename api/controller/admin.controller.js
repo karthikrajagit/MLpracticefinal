@@ -11,30 +11,28 @@ export const upload = async (req, res) => {
   }
 
   try {
-    // Create a new Formdata entry
-    const newData = new Formdata({
+    const newData = new Formdata({                         
       title,
-      description,
+      description,                 
       output: parsedOutput,
       level,
-      filenames: req.files.map((file) => file.filename), // Array of filenames
+      filenames: req.files.map((file) => file.filename), 
     });
     await newData.save();
 
     const results = [];
-    for (const file of req.files) {
+    for (const file of req.files) {                           
       const fileResults = [];
       await new Promise((resolve, reject) => {
-        fs.createReadStream(`flask-app/uploads/${file.filename}`) // Correct file path
+        fs.createReadStream(`flask-app/uploads/${file.filename}`) 
           .pipe(csv())
           .on('data', (data) => fileResults.push(data))
           .on('end', resolve)
-          .on('error', reject);
+          .on('error', reject);                               
       });
-      results.push({ file: file.filename, data: fileResults }); // Store parsed data
+      results.push({ file: file.filename, data: fileResults });
     }
 
-    // Send response with parsed data
     res.json({
       message: 'Files uploaded and processed successfully',
       data: results,

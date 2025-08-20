@@ -2,7 +2,6 @@ import Formdata from '../models/Formdata.js';
 import fs from 'fs';
 import csv from 'csv-parser';
 
-
 export const getAllproblems = async (req, res) => {
   try {
     const problems = await Formdata.find().sort({createdAt: -1});
@@ -27,6 +26,7 @@ const getFirstFiveRows = (filePath) => {
   })
 }
 
+
 export const getProblemById = async (req, res) => {
   try {
     const problem = await Formdata.findById(req.params.id);
@@ -39,7 +39,7 @@ export const getProblemById = async (req, res) => {
 
     if (datasets.length === 0) {
       return res.status(404).json({ message: 'No datasets available for this problem' });
-    }
+    }                                                        
 
     const firstFilename = datasets[0];
     const firstoutput = outputs[0] || null;
@@ -51,14 +51,14 @@ export const getProblemById = async (req, res) => {
 
     let firstFiveRows;
     try {
-      firstFiveRows = await getFirstFiveRows(filePath);
+      firstFiveRows = await getFirstFiveRows(filePath);       
     } catch (error) {
       console.error('Error parsing file:', error);
       return res.status(500).json({ message: 'Error parsing dataset file' });
     }
 
     res.json({
-      ...problem._doc, // Include all fields from the problem document
+      ...problem._doc, 
       filename: firstFilename,
       firstFiveRows,
       outputs,

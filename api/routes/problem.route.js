@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadMultipleFiles } from '../middleware/uploadmiddleware.js'; 
+import { uploadMultipleFiles} from '../middleware/uploadmiddleware.js'; 
 import { getAllproblems,  getProblemById} from '../controller/problem.controller.js';
 import { upload } from '../controller/admin.controller.js';
 import { postContent, postSubtopic, postTopic } from '../controller/post.controller.js';

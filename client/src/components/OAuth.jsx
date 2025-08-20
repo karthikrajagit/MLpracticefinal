@@ -1,4 +1,3 @@
-// OAuth Component
 import React from 'react';
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth';
 import { app } from '../firebase';
@@ -43,10 +42,10 @@ export default function OAuth() {
     return (
         <div  className="flex items-center justify-center">
         <button
-            type="button" // Change to "button" instead of "submit"
+            type="button" 
             className="w-full bg-green-500 text-white font-semibold py-2 rounded-lg hover:bg-green-600 transition duration-200 flex items-center justify-center"
             disabled={loading}
-            onClick={handleGoogle} // Use onClick instead of onSubmit
+            onClick={handleGoogle} 
             >
                 {loading ? (
                     <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white border-opacity-75"></div>

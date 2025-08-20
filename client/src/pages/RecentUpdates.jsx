@@ -4,9 +4,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
-
-
 const RecentUpdates = () => {
   const navigate = useNavigate();
   const [topics, setTopics] = useState([]);
@@ -21,9 +18,9 @@ const RecentUpdates = () => {
       setTopics(topicNames);
       } catch (error) {
       console.log(error); 
-      } 
+      }                                     
     };
-    retrieveTopics();
+    retrieveTopics();                      
   }, []);
 
 

@@ -11,21 +11,16 @@ export const userUpload = async (req, res) => {
 
   try {
     const existingDataset = await UserDataset.findOne({ userId });
-
-    // If user already has a dataset, delete the old file from the directory
     if (existingDataset) {
       const oldFilePath = `flask-app/userdataset/${existingDataset.filename}`;
 
-      // Check if file exists before deleting
       if (fs.existsSync(oldFilePath)) {
-        fs.unlinkSync(oldFilePath); // Delete the old file
+        fs.unlinkSync(oldFilePath); 
       }
 
-      // Update the dataset with the new file name
       existingDataset.filename = req.file.filename;
       await existingDataset.save();
     } else {
-      // If no dataset exists, create a new one
       const newData = new UserDataset({
         userId,
         filename: req.file.filename,
@@ -34,7 +29,6 @@ export const userUpload = async (req, res) => {
       await newData.save();
     }
 
-    // Process CSV file
     const fileResults = [];
     await new Promise((resolve, reject) => {
       fs.createReadStream(`flask-app/userdataset/${req.file.filename}`)

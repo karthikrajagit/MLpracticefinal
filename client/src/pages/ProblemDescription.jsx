@@ -54,7 +54,6 @@ export default function ProblemDescription() {
     }
   };
 
-  // State to manage code cells and outputs
   const [cells, setCells] = useState([{ id: 1, code: '', output: '', isError: false, }]);
   const [submissionStatus, setSubmissionStatus] = useState(''); 
 
@@ -96,10 +95,9 @@ export default function ProblemDescription() {
     setToast({ visible: true, message });
     setTimeout(() => {
       setToast({ visible: false, message: '' });
-    }, 3000); // Auto-hide after 5 seconds
+    }, 3000);
   };
 
-  // Function to handle code execution (sending to backend for evaluation)
   const executeCode = async (cellId) => {
     const combinedCode = cells
       .filter(c => c.id <= cellId)
@@ -108,7 +106,7 @@ export default function ProblemDescription() {
       if(user!==null)
       {
       try {
-      {
+      {                                                      
         const response = await fetch('http://localhost:5000/execute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,7 +118,7 @@ export default function ProblemDescription() {
         setCells(cells.map(c => c.id === cellId ? { 
           ...c, 
           output: data.output, 
-          image: data.image, // Store the image data
+          image: data.image, 
           isError: false 
         } : c));
         
@@ -149,12 +147,9 @@ export default function ProblemDescription() {
     executeCode(cellId);
     setIsLoadings(true);
   }
-  // Add new code cell
   const addNewCell = () => {
     setCells([...cells, { id: cells.length + 1, code: '', output: '' }]);
   };
-
-  // Update code in a cell
   const updateCode = (value, cellId) => {
     setCells(cells.map(c => c.id === cellId ? { ...c, code: value } : c));
     debouncedSave(cellId);  
@@ -164,7 +159,7 @@ export default function ProblemDescription() {
 
 const submitAllCells = async () => {
   const combinedCode = cells
-    .map(c => c.code)  // Get code from all cells, not just the last one
+    .map(c => c.code)  
     .join('\n');
 
   try {
@@ -180,8 +175,7 @@ const submitAllCells = async () => {
         }),
       });
       const data = await response.json();
-      if (response.ok) {
-        // Update all cells' outputs based on the response       
+      if (response.ok) {     
         setCells(cells.map(c => ({ ...c, output: data.output , isError: false })));
         setIsLoading(false);
         setSubmissionStatus('Accepted');
@@ -298,7 +292,6 @@ const submitAllCells = async () => {
       {/* Divider */}
       <div className="border-l-2 border-gray-300 hidden lg:block"></div>
 
-      {/* Right Section: Code Editor and Output */}
       <div className="lg:w-1/2 mt-6 lg:mt-0">
         {cells.map(cell => (
           <div key={cell.id} className="mb-6">
@@ -317,10 +310,9 @@ const submitAllCells = async () => {
             isloading ? "cursor-not-allowed" : ""
             }`}
             onClick={() => handleButtonClick1(cell.id)}
-            disabled={isloadings} // Disable the button while loading
+            disabled={isloadings} 
             >
         {isloadings ? (
-          // Spinner
           <svg
             className="w-5 h-5 text-white animate-spin"
             xmlns="http://www.w3.org/2000/svg"

@@ -8,12 +8,12 @@ export default function PostProblem() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    output: [], // Initialize output as an array
+    output: [], 
     level: '',
   });
   const [file, setFile] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [currentOutput, setCurrentOutput] = useState(''); // Temporary input for array items
+  const [status, setStatus] = useState(null);                   
+  const [currentOutput, setCurrentOutput] = useState(''); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,7 +26,7 @@ export default function PostProblem() {
   const handleAddOutput = () => {
     if (currentOutput.trim()) {
       setFormData({ ...formData, output: [...formData.output, currentOutput.trim()] });
-      setCurrentOutput(''); // Clear the input field
+      setCurrentOutput('');
     }
   };
 
@@ -42,8 +42,8 @@ export default function PostProblem() {
     dispatch(uploadStart());
     const data = new FormData();
     data.append('title', formData.title);
-    data.append('description', formData.description);
-    data.append('output', JSON.stringify(formData.output)); // Append output as JSON
+    data.append('description', formData.description);         
+    data.append('output', JSON.stringify(formData.output));   
     data.append('level', formData.level);
     if (file) {
       Array.from(file).forEach((f) => data.append('files', f));

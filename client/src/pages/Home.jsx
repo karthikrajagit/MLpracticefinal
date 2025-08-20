@@ -33,7 +33,7 @@ export default function Home() {
               <th className="border border-gray-300 px-4 py-2 text-left">Level</th>  
               <th className="border border-gray-300 px-4 py-2 text-left">Actions</th>      
             </tr>
-          </thead>
+          </thead>                          
           <tbody>
             {problems.map((problem, index) => (
               <tr key={problem._id} className="hover:bg-gray-100">

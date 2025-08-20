@@ -16,17 +16,16 @@ var uploadMiddleware = multer({
   fileFilter: function (req, file, callback) {
     if (file.mimetype === 'text/csv') {
       callback(null, true);
-    } else {
+    } else {  
       console.log('File is in the wrong format');
       callback(null, false);
     }
   },
   limits: {
-    fileSize: 1024 * 1024 * 2, // Set file size limit (2MB per file)
+    fileSize: 1024 * 1024 * 2, 
   },
 });
 
-// Use `.array()` to handle multiple file uploads
-export const uploadMultipleFiles = uploadMiddleware.array('files', 5); // Accept up to 5 files with the field name 'files'
+export const uploadMultipleFiles = uploadMiddleware.array('files', 5); 
 
 export default uploadMultipleFiles;

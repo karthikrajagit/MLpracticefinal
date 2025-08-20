@@ -9,8 +9,8 @@ export const saveCodeToServer = async (req, res) => {
         }
         if(Code.findOne({ userId, problemId })){
             const updatedDocument = await Code.updateOne(
-                { userId, problemId }, // Find by userId and problemId
-                { $set: { code } },    // Set the new code
+                { userId, problemId }, 
+                { $set: { code } },    
                 { upsert: true }  
             );
             return res.status(201).json({ message: "Code updated successfully" });
