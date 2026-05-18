@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce';
 
 export default function ProblemDescription() {
   const {user} = useSelector((state) => state.user);
-  const userId = user?._id;
+  const userId = user?._id;                 
   const { id: problemIdFromUrl } = useParams();
   const [problem, setProblem] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -17,6 +17,8 @@ export default function ProblemDescription() {
   const [toast, setToast] = useState({ visible: false, message: '' });
   const [isVisible, setIsVisible] = useState(false);
   const [isloadings, setIsLoadings] = useState(false);
+  const [cells, setCells] = useState([{ id: 1, code: '', output: '', isError: false, }]);
+  const [submissionStatus, setSubmissionStatus] = useState(''); 
 
   const saveCodeToServer = async (cellId) => {
     const codeToSave = cells.find((c) => c.id === cellId)?.code || '';
@@ -54,8 +56,7 @@ export default function ProblemDescription() {
     }
   };
 
-  const [cells, setCells] = useState([{ id: 1, code: '', output: '', isError: false, }]);
-  const [submissionStatus, setSubmissionStatus] = useState(''); 
+
 
   
   useEffect(() => {
@@ -71,7 +72,7 @@ export default function ProblemDescription() {
         } else {
           setLoading(false);
           console.error('Error fetching problem data:', data.message);
-        }
+        }                                   
       } catch (error) {
         setLoading(false);
         console.error('Fetch error:', error);
@@ -98,7 +99,7 @@ export default function ProblemDescription() {
     }, 3000);
   };
 
-  const executeCode = async (cellId) => {
+  const executeCode = useCallback(async (cellId) => {
     const combinedCode = cells
       .filter(c => c.id <= cellId)
       .map(c => c.code)
@@ -116,7 +117,7 @@ export default function ProblemDescription() {
       if (response.ok) {
         setIsLoadings(false);
         setCells(cells.map(c => c.id === cellId ? { 
-          ...c, 
+          ...c,                             
           output: data.output, 
           image: data.image, 
           isError: false 
@@ -131,13 +132,13 @@ export default function ProblemDescription() {
     catch (error) {
       setIsLoadings(false);
       setCells(cells.map(c => c.id === cellId ? { ...c, output: 'Error executing code' } : c));
-    }
+    }                                       
   }else
     {
       setIsLoadings(false);
       showToast("Please sign in to run the code");
     }     
-  };
+  });
   const handleButtonClick2 = () => {
     submitAllCells();
     setIsLoading(true);
@@ -147,14 +148,13 @@ export default function ProblemDescription() {
     executeCode(cellId);
     setIsLoadings(true);
   }
-  const addNewCell = () => {
+  const addNewCell = useCallback(() => {
     setCells([...cells, { id: cells.length + 1, code: '', output: '' }]);
-  };
-  const updateCode = (value, cellId) => {
+  });
+  const updateCode = useCallback((value, cellId) => {
     setCells(cells.map(c => c.id === cellId ? { ...c, code: value } : c));
     debouncedSave(cellId);  
-
-  };
+  });
   const debouncedSave = useCallback(debounce(saveCodeToServer, 1000), [cells]);
 
 const submitAllCells = async () => {

@@ -21,7 +21,7 @@ import Content from './pages/Content'
 
 export default function App() {
  return (
-    <BrowserRouter>
+    <BrowserRouter>     
       <Header/>
         <Routes>
           <Route path='/' element = {<Intro/>}/>

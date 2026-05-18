@@ -7,15 +7,14 @@ import cors from 'cors'
 import path from 'path';
 import topicroutes from "./routes/topic.route.js";
 
-
 dotenv.config();
 
 const app = express();                      
-const __dirname = path.resolve();
+const __dirname = path.resolve();            
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use(cors());
-
+                                            
 const startServer = async () => {
   try {
     mongoose.connect(process.env.MONGO);

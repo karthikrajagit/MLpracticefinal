@@ -9,7 +9,7 @@ export default function Home() {
       try {
         const response = await fetch('/api/v1/admin/problems');
         const data = await response.json();
-        if (response.ok) {
+        if (response.ok) { 
           setProblems(data);
         } else {
           console.log('Error fetching problems:', response.statusText);
