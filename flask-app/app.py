@@ -85,7 +85,7 @@ def execute():
         return jsonify({"error": str(e)}), 500
     
 
-
+print("hellow")
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.json
